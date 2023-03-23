@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>bài 5</title>
+    <link rel="stylesheet" href="./bai5.css" />
+  </head>
+  <body>
+    <div class="container">
+      <table id="addChiCuon">
+        <tr>
+          <td><label for="">Tên Nhân Viên</label></td>
+          <td><input id="input" type="text" placeholder="nhập tên ..." /></td>
+          <td><button onclick="addStaff()">thêm</button></td>
+        </tr>
+      </table>
+      <div id="tableName">
+        <table border="1px" id="listChiCuon">
+          <tr>
+            <td>stt</td>
+            <td>name</td>
+            <td><button>Sửa</button></td>
+            <td><button>Xóa</button></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <script>
+      let listStaff = [];
+      function addStaff() {
+        let name = document.getElementById("input").value;
+        let listChiCuon = {
+          name: name,
+        };
+
+        listStaff.push(listChiCuon);
+        localStorage.setItem("listStaff", JSON.stringify(listStaff));
+        renderStaff();
+      }
+      function renderStaff() {
+        let listMovie = JSON.parse(localStorage.getItem("listStaff"));
+        let rerult = `
+                  <tr>
+                          <td>stt</td>
+                          <td>name</td>
+                          <td><button>Sửa</button></td>
+                          <td><button>Xóa</button></td>
+                  </tr>
+                  `;
+        for (let i = 0; i < listStaff.length; i++) {
+          rerult += `
+                      <tr>
+                          <td>${i + 1}</td>
+                          <td>${listStaff[i].name}</td>
+                          <td><button onclick= "handleEdit(${i})">Sửa</button></td>
+                          <td><button onclick = "handelDelete(${i})">Xóa</button></td>
+                      </tr>
+                      `;
+        }
+        document.getElementById("listChiCuon").innerHTML = rerult;
+      }
+      renderStaff();
+
+      function handelDelete(id) {
+        listStaff.splice(id, 1);
+        localStorage.setItem("listStaff", JSON.stringify(listStaff));
+        renderStaff();
+      }
+
+      function handleEdit() {
+        document.getElementById("input").value = listStaff[id].name;
+        localStorage.setItem("flag", id);
+      }
+    </script>
+  </body>
+</html>
